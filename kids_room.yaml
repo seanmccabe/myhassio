@@ -1,0 +1,426 @@
+type: custom:vertical-stack-in-card
+cards:
+  - type: custom:vertical-stack-in-card
+    cards:
+      - type: custom:layout-card
+        layout_type: custom:grid-layout
+        layout:
+          grid-template-columns: 116px auto
+          grid-template-rows: auto
+          margin: 0 auto;
+          padding: 5px 2px;
+        cards:
+          - type: custom:mushroom-chips-card
+            alignment: center;
+            chips:
+              - type: template
+                entity: light.kit_bedroom
+                icon: mdi:lightbulb
+                icon_color: |-
+                  {% set state = states(entity) %} 
+                  {% if state == 'on' %}
+                   white
+                  {% else %}
+                   grey
+                  {% endif %}
+                tap_action:
+                  action: toggle
+                card_mod: null
+                style: |
+                  ha-card {
+                    --chip-box-shadow: none;
+                    --chip-background: none;
+                    --chip-padding: 0 0 0 8px;
+                  }
+              - type: template
+                entity: switch.adaptive_lighting_kit_bedroom
+                icon: |-
+                  {% set state = states(entity) %} 
+                  {% if state == 'on' %}
+                   mdi:lightbulb-auto
+                  {% else %}
+                   mdi:lightbulb-auto-outline
+                  {% endif %}
+                icon_color: |-
+                  {% set state = states(entity) %} 
+                  {% if state == 'on' %}
+                   orange
+                  {% else %}
+                   grey
+                  {% endif %}
+                tap_action:
+                  action: toggle
+                card_mod: null
+                style: |
+                  ha-card {
+                    --chip-box-shadow: none;
+                    --chip-background: none;
+                    --chip-spacing: 0px;
+                    --chip-padding: 0 5px 0 5px;
+                  }
+              - type: template
+                entity: switch.adaptive_lighting_sleep_mode_kit_bedroom
+                icon: mdi:theme-light-dark
+                icon_color: |-
+                  {% set state = states(entity) %} 
+                  {% if state == 'on' %}
+                   orange
+                  {% else %}
+                   grey
+                  {% endif %}
+                tap_action:
+                  action: toggle
+                card_mod: null
+                style: |
+                  ha-card {
+                    --chip-box-shadow: none;
+                    --chip-background: none;
+                    --chip-spacing: 0px;
+                    --chip-padding: 0;
+                  }
+            card_mod:
+              style: |
+                ha-card {
+                  background-color: rgba(0, 0, 0, 0.6) !important;
+                  border-radius: var(--ha-card-border-radius, 12px) !important;
+                  --chip-box-shadow: none;
+                  --chip-background: none;
+                  --chip-spacing: 0;
+                }
+          - type: custom:mushroom-chips-card
+            chips:
+              - type: template
+                content: >-
+                  {{ states(entity) | float }} {{ state_attr(entity,
+                  "unit_of_measurement") }}
+                entity: sensor.kit_bedroom_environment_sensor_temperature
+                icon: mdi:thermometer
+                tap_action:
+                  action: more-info
+                icon_color: |-
+                  {% set state=states(entity)|float(0) %}
+                  {% if state >= 21 %}
+                  red
+                  {% elif state >= 19 %}
+                  orange
+                  {% elif state < 19 %}
+                  blue
+                  {% else %}
+                  grey
+                  {% endif %}
+                style: |
+                  ha-card {
+                    --chip-box-shadow: none;
+                    --chip-background: none;
+                    --chip-spacing: 0px;
+                    --chip-padding: 0 5px 0 5px;
+                  }
+              - type: template
+                content: >-
+                  {{ states(entity) }}{{ state_attr(entity,
+                  "unit_of_measurement") }}
+                entity: sensor.kit_bedroom_environment_sensor_humidity
+                icon: mdi:water
+                icon_color: blue
+                tap_action:
+                  action: none
+                hold_action:
+                  action: none
+                style: |
+                  ha-card {
+                    --chip-box-shadow: none;
+                    --chip-background: none;
+                    --chip-spacing: 0px;
+                    --chip-padding: 0 5px 0 0;
+                  }
+              - type: template
+                content: >-
+                  {{ states(entity) }} {{ state_attr(entity,
+                  "unit_of_measurement") }}
+                entity: sensor.kit_bedroom_environment_sensor_pressure
+                icon: mdi:gauge
+                icon_color: grey
+                tap_action:
+                  action: none
+                style: |
+                  ha-card {
+                    --chip-box-shadow: none;
+                    --chip-background: none;
+                    --chip-spacing: 0px;
+                    --chip-padding: 0;
+                  }
+              - type: template
+                content: >-
+                  {{ states(entity) }} {{ state_attr(entity,
+                  "unit_of_measurement") }}
+                entity: sensor.aarlo_air_quality_kit_bedroom
+                icon: mdi:biohazard
+                icon_color: |-
+                  {% set state = states(entity)|int(0) %}
+                  {% if state <= 10 %}
+                   green
+                  {% elif state <= 25 %}
+                   yellow
+                  {% elif state <= 40 %}
+                   orange
+                  {% elif state > 40 %}
+                   red
+                  {% else %}
+                   grey
+                  {% endif %}
+                tap_action:
+                  action: none
+                style: |
+                  ha-card {
+                    --chip-box-shadow: none;
+                    --chip-background: none;
+                    --chip-spacing: 0px;
+                    --chip-padding: 0 0 0 5px;
+                  }
+            card_mod:
+              style: |
+                ha-card {
+                  background-color: rgba(0, 0, 0, 0.7) !important;
+                  border-radius: var(--ha-card-border-radius, 12px) !important;
+                  --chip-box-shadow: none;
+                  --chip-background: none;
+                  --chip-spacing: 0;
+                }
+      - type: custom:vertical-stack-in-card
+        cards:
+          - type: custom:layout-card
+            layout_type: custom:grid-layout
+            layout:
+              grid-template-columns: 85% auto
+              grid-template-rows: auto
+              margin: 0 0 -10px 0;
+              padding: 0;
+            cards:
+              - type: custom:mushroom-template-card
+                primary: Kit's Bedroom
+                secondary: |-
+                  {% if states('input_boolean.kids_bedtime') == 'on' %}
+                  Bedtime
+                  {% elif states('input_boolean.kids_sleep') == 'on' %}
+                  Sleep Mode
+                  {% endif %}
+                icon: >-
+                  {% if (states('input_boolean.kids_bedtime') == 'on') or
+                  (states('input_boolean.kids_sleep') == 'on') %}
+                  mdi:bed-outline {% else %} mdi:bed-empty {% endif %}
+                fill_container: true
+                tap_action:
+                  action: navigate
+                  navigation_path: kit-bedroom
+                hold_action:
+                  action: none
+                icon_color: green
+                card_mod:
+                  style: |
+                    ha-card {
+                      background: none;
+                      padding: 10px 12px !important;
+                      --chip-box-shadow: none;
+                      --chip-background: none;
+                      --chip-spacing: 0;
+                      box-shadow: none;
+                    }
+              - type: custom:mushroom-template-card
+                alignment: end
+                entity: switch.night_light
+                icon: >-
+                  {% if ((states('input_boolean.kids_bedtime') == 'on') or
+                  (states(entity) == 'on')) %}
+
+                  mdi:lamp
+
+                  {% endif %}
+                fill_container: true
+                tap_action:
+                  action: toggle
+                hold_action:
+                  action: none
+                icon_color: >-
+                  {% if ((states('input_boolean.kids_bedtime') == 'on') or
+                  (states('input_boolean.kids_sleep') == 'on')) and
+                  states(entity) == 'on' %}
+                   red
+                  {% else %}
+                   grey
+                  {% endif %}
+                card_mod:
+                  style: |
+                    ha-card {
+                      background: none;
+                      padding: 10px 12px !important;
+                      --chip-box-shadow: none;
+                      --chip-background: none;
+                      --chip-spacing: 0;
+                      box-shadow: none;
+                    }
+          - type: custom:layout-card
+            layout_type: custom:grid-layout
+            layout:
+              grid-template-columns: 65% auto
+              grid-template-rows: auto
+              margin: 0 0 0 10px;
+              padding: 5px
+            cards:
+              - type: custom:mushroom-chips-card
+                chips:
+                  - type: template
+                    entity: media_player.kits_bedroom_speaker
+                    content: >-
+                      {% set state = states(entity) %}  {% if state == 'playing'
+                      %}
+                       {{ states(entity) | capitalize }} {{ state_attr(entity, 'media_title') }}
+                      {% else %}
+                       {{ states(entity) | capitalize }}
+                      {% endif %}
+                    icon: mdi:google-assistant
+                    icon_color: |-
+                      {% set state = states(entity) %}
+                      {% if state == 'playing' %}
+                       green
+                      {% elif state == 'paused' %}
+                      yellow
+                      {% elif state == 'off' %}
+                      grey
+                      {% elif state == 'unavailable' %}
+                      red
+                      {% else %}
+                      red
+                      {% endif %}
+                    tap_action:
+                      action: more-info
+                    card_mod: null
+                    style: |
+                      ha-card {
+                        --chip-box-shadow: none;
+                        --chip-background: none;
+                        --chip-spacing: 0px;
+                        --chip-padding: 0;
+                      }
+                card_mod:
+                  style: |
+                    ha-card {
+                      --chip-spacing: 0;
+                    }
+              - type: custom:mushroom-chips-card
+                alignment: end
+                chips:
+                  - type: template
+                    entity: binary_sensor.aarlo_motion_kit_bedroom
+                    icon: |-
+                      {% if is_state(entity, 'on') %}
+                        mdi:motion-sensor
+                      {% else %}
+                        mdi:motion-sensor-off
+                      {% endif %}
+                    icon_color: |-
+                      {% if is_state(entity, 'on') %}
+                        red
+                      {% else %}
+                        green
+                      {% endif %}
+                    tap_action:
+                      action: more-info
+                    style: |
+                      ha-card {
+                        {% if is_state('binary_sensor.aarlo_motion_kit_bedroom', 'on') %}
+                        animation: blink 2s linear infinite;
+                        {% endif %}
+                        --chip-box-shadow: none;
+                        --chip-background: none;
+                        --chip-spacing: 0px;
+                        --chip-padding: 0 0.05em;
+                      }
+                      @keyframes blink {
+                        50% {opacity: 0;}
+                      }
+                  - type: template
+                    entity: binary_sensor.kit_bedroom_door_sensor_contact
+                    icon: |-
+                      {% if is_state(entity, 'on') %}
+                        mdi:door-open
+                      {% else %}
+                        mdi:door-closed
+                      {% endif %}
+                    icon_color: |-
+                      {% if is_state(entity, 'on') %}
+                        green
+                      {% else %}
+                        red
+                      {% endif %}
+                    tap_action:
+                      action: more-info
+                    style: |
+                      ha-card {
+                        --chip-box-shadow: none;
+                        --chip-background: none;
+                        --chip-spacing: 0px;
+                        --chip-padding: 0 0.05em;
+                      }
+                  - type: template
+                    entity: alarm_control_panel.aarlo_kit_bedroom
+                    icon: |-
+                      {% if is_state(entity, 'armed_away') %}
+                        mdi:shield
+                      {% elif is_state(entity, 'armed_home') %}
+                        mdi:shield-outline
+                      {% else %}
+                        mdi:shield-off
+                      {% endif %}
+                    icon_color: |-
+                      {% if is_state(entity, 'armed_away') %}
+                        red
+                      {% elif is_state(entity, 'armed_home') %}
+                        green
+                      {% else %}
+                        grey
+                      {% endif %}
+                    tap_action:
+                      action: more-info
+                    style: |
+                      ha-card {
+                        --chip-box-shadow: none;
+                        --chip-background: none;
+                        --chip-spacing: 0px;
+                        --chip-padding: 0 0.05em;
+                      }
+        card_mod:
+          style: |
+            ha-card {
+              background-color: rgba(0, 0, 0, 0.7) !important;
+              --chip-box-shadow: none;
+              --chip-background: none;
+              --chip-spacing: 0;
+              box-shadow: none;
+              position: relative;
+              bottom: -100px;
+              border-radius: 0;
+            }
+            :host {
+              --mush-card-primary-font-size: 1.2rem;
+            }
+    card_mod:
+      style: |
+        ha-card {
+          min-height: 275px;
+          background: var(--card-background-color) url(
+           {% if (is_state('light.kit_bedroom', 'on') and state_attr('light.kit_bedroom', 'brightness') < 20) and (is_state('input_boolean.sunset_mode', 'on')) %}  
+            '/local/backgrounds/kit_bedroom_night-small.jpg' 
+           {% elif (is_state('light.kit_bedroom', 'off') and is_state('input_boolean.sunset_mode', 'on')) %}
+            '/local/backgrounds/kit_bedroom_night-small.jpg'
+           {% else %}
+             '/local/backgrounds/kit_bedroom-small.jpg'
+           {% endif %});
+          no-repeat center 0px;
+          background-size: cover;
+          background-blend-mode: overlay;
+          background-color: rgba(var(--rgb-card-background-color), 0.2);
+          position: relative;
+          background-position: center;
+          background-repeat: no-repeat;
+          border-radius: 15px 15px 0 0;
+        }
